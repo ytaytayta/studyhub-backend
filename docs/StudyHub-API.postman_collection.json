@@ -1,0 +1,417 @@
+{
+  "info": {
+    "name": "StudyHub AI API",
+    "description": "Complete API collection for StudyHub AI Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4000/api" },
+    { "key": "courseId", "value": "" },
+    { "key": "lessonId", "value": "" },
+    { "key": "quizId", "value": "" },
+    { "key": "noteId", "value": "" },
+    { "key": "sessionId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newuser@example.com\",\n  \"password\": \"password123\",\n  \"name\": \"New User\",\n  \"role\": \"STUDENT\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/register"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"student@demo.com\",\n  \"password\": \"demo1234\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/login"
+          }
+        },
+        {
+          "name": "Google OAuth",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idToken\": \"google-id-token-here\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/google"
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/refresh"
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"student@demo.com\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/forgot-password"
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"reset-token-from-email\",\n  \"password\": \"newpassword123\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/reset-password"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get Me",
+          "request": { "method": "GET", "url": "{{baseUrl}}/users/me" }
+        },
+        {
+          "name": "Update Me",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Name\",\n  \"githubUsername\": \"octocat\"\n}"
+            },
+            "url": "{{baseUrl}}/users/me"
+          }
+        },
+        {
+          "name": "Get User By ID",
+          "request": { "method": "GET", "url": "{{baseUrl}}/users/:id" }
+        },
+        {
+          "name": "Update Language",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"language\": \"id\"\n}" },
+            "url": "{{baseUrl}}/users/me/language"
+          }
+        },
+        {
+          "name": "Update Learning Type",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"learningType\": \"VARK\"\n}" },
+            "url": "{{baseUrl}}/users/me/learning-type"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Courses",
+      "item": [
+        {
+          "name": "List Courses",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/courses?search=javascript&category=Programming&level=beginner&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses"],
+              "query": [
+                { "key": "search", "value": "javascript" },
+                { "key": "category", "value": "Programming" },
+                { "key": "level", "value": "beginner" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Course",
+          "request": { "method": "GET", "url": "{{baseUrl}}/courses/{{courseId}}" }
+        },
+        {
+          "name": "Create Course",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"New Course\",\n  \"description\": \"Course description here\",\n  \"category\": \"Programming\",\n  \"level\": \"beginner\",\n  \"price\": 29.99,\n  \"isPublished\": true\n}"
+            },
+            "url": "{{baseUrl}}/courses"
+          }
+        },
+        {
+          "name": "Update Course",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Updated Title\"\n}" },
+            "url": "{{baseUrl}}/courses/{{courseId}}"
+          }
+        },
+        {
+          "name": "Delete Course",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/courses/{{courseId}}" }
+        },
+        {
+          "name": "Enroll Course",
+          "request": { "method": "POST", "url": "{{baseUrl}}/courses/{{courseId}}/enroll" }
+        },
+        {
+          "name": "Get Enrolled Courses",
+          "request": { "method": "GET", "url": "{{baseUrl}}/courses/enrolled" }
+        }
+      ]
+    },
+    {
+      "name": "Lessons",
+      "item": [
+        {
+          "name": "Create Lesson",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Lesson Title\",\n  \"content\": \"# Markdown content\",\n  \"order\": 1\n}"
+            },
+            "url": "{{baseUrl}}/courses/{{courseId}}/lessons"
+          }
+        },
+        {
+          "name": "Get Lesson",
+          "request": { "method": "GET", "url": "{{baseUrl}}/lessons/{{lessonId}}" }
+        },
+        {
+          "name": "Update Lesson",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Updated Lesson\"\n}" },
+            "url": "{{baseUrl}}/lessons/{{lessonId}}"
+          }
+        },
+        {
+          "name": "Delete Lesson",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/lessons/{{lessonId}}" }
+        }
+      ]
+    },
+    {
+      "name": "Quizzes",
+      "item": [
+        {
+          "name": "Create Quiz",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Lesson Quiz\",\n  \"passingScore\": 70,\n  \"questions\": [\n    {\n      \"text\": \"What is JavaScript?\",\n      \"options\": [\"Language\", \"Framework\", \"Database\", \"OS\"],\n      \"correctOptionIndex\": 0\n    }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/lessons/{{lessonId}}/quizzes"
+          }
+        },
+        {
+          "name": "Get Quiz",
+          "request": { "method": "GET", "url": "{{baseUrl}}/quizzes/{{quizId}}" }
+        },
+        {
+          "name": "Submit Attempt",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"answers\": [0, 0]\n}" },
+            "url": "{{baseUrl}}/quizzes/{{quizId}}/attempt"
+          }
+        },
+        {
+          "name": "Get Attempts",
+          "request": { "method": "GET", "url": "{{baseUrl}}/quizzes/{{quizId}}/attempts" }
+        }
+      ]
+    },
+    {
+      "name": "AI",
+      "item": [
+        {
+          "name": "Chat",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Explain variables in JavaScript\",\n  \"courseId\": \"{{courseId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/ai/chat"
+          }
+        },
+        {
+          "name": "Generate Quiz",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lessonId\": \"{{lessonId}}\",\n  \"questionCount\": 5\n}"
+            },
+            "url": "{{baseUrl}}/ai/generate-quiz"
+          }
+        },
+        {
+          "name": "Speech to Text",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [{ "key": "audio", "type": "file", "src": "" }]
+            },
+            "url": "{{baseUrl}}/ai/speech-to-text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Create Checkout (Course)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": \"{{courseId}}\",\n  \"method\": \"card\"\n}"
+            },
+            "url": "{{baseUrl}}/payments/create-checkout"
+          }
+        },
+        {
+          "name": "Create Checkout (Plan)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"plan\": \"PRO\",\n  \"method\": \"card\"\n}"
+            },
+            "url": "{{baseUrl}}/payments/create-checkout"
+          }
+        }
+      ]
+    },
+    {
+      "name": "GitHub",
+      "item": [
+        {
+          "name": "Get Repos",
+          "request": { "method": "GET", "url": "{{baseUrl}}/github/repos" }
+        }
+      ]
+    },
+    {
+      "name": "Stats",
+      "item": [
+        {
+          "name": "Dashboard",
+          "request": { "method": "GET", "url": "{{baseUrl}}/stats/dashboard" }
+        }
+      ]
+    },
+    {
+      "name": "Notes",
+      "item": [
+        {
+          "name": "List Notes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/notes?lessonId={{lessonId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["notes"],
+              "query": [{ "key": "lessonId", "value": "{{lessonId}}" }]
+            }
+          }
+        },
+        {
+          "name": "Create Note",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"My study note\",\n  \"lessonId\": \"{{lessonId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/notes"
+          }
+        },
+        {
+          "name": "Update Note",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"content\": \"Updated note content\"\n}" },
+            "url": "{{baseUrl}}/notes/{{noteId}}"
+          }
+        },
+        {
+          "name": "Delete Note",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/notes/{{noteId}}" }
+        }
+      ]
+    },
+    {
+      "name": "Upload",
+      "item": [
+        {
+          "name": "Upload File",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [{ "key": "file", "type": "file", "src": "" }]
+            },
+            "url": "{{baseUrl}}/upload"
+          }
+        }
+      ]
+    }
+  ]
+}
