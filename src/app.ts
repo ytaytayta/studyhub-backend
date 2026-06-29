@@ -6,16 +6,18 @@ import cookieParser from 'cookie-parser';
 import routes from './routes';
 import { errorHandler, notFoundHandler } from './middlewares/error';
 import { generalLimiter } from './middlewares/rateLimiter';
-import { config } from './config';
 import { webhook } from './controllers/payment.controller';
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 app.use(helmet());
 
+// ✅ CORS terbuka untuk development (semua origin diizinkan)
 app.use(
   cors({
-    origin: config.frontendUrl,
+    origin: true,
     credentials: true,
   })
 );
@@ -30,7 +32,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-if (config.nodeEnv === 'development') {
+if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
